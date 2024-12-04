@@ -1,8 +1,8 @@
-import { useStore } from "../data/store.jsx";
+import { useStore } from "../data/store.js";
 import Day from "./day/Day";
 import PrioList from "./prio-list/PrioList.jsx";
 import Summary from "./Summary.jsx";
-import { splitTodosIntoDays } from "../utils/list.jsx";
+import { splitTodosIntoDays } from "../utils/list.js";
 
 const Main = () => {
   const todos = useStore((state) => state.todos);

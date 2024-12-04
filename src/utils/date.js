@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useStore } from "../../data/store";
-import Item from "../day/Item";
+import { useStore } from "../../data/store.js";
+import Item from "../day/Item.jsx";
 
 const PrioList = () => {
   const todos = useStore((state) => state.todos);

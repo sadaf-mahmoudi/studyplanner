@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStore } from "../../data/store.jsx";
+import { useStore } from "../../data/store.js";
 
 const Item = ({ item, handleChange, handleRemove, handleEdit }) => {
   const [isEditing, setIsEditing] = useState(false);

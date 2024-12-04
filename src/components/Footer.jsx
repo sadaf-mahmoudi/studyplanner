@@ -1,4 +1,4 @@
-import { useStore } from "../data/store.jsx";
+import { useStore } from "../data/store.js";
 
 const Footer = () => {
   const todayName = useStore((state) => state.todayName);

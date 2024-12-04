@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Item from "./Item";
-import { useStore } from "../../data/store.jsx";
+import { useStore } from "../../data/store.js";
 
 const Day = ({ dayName, dayShortName, items = [] }) => {
   const [isAdding, setIsAdding] = useState(false);

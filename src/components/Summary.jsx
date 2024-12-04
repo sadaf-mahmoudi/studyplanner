@@ -1,4 +1,4 @@
-import { useStore } from "../data/store.jsx";
+import { useStore } from "../data/store.js";
 
 const Summary = () => {
   const todos = useStore((state) => state.todos);

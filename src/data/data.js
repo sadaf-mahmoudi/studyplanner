@@ -1,27 +1,6 @@
 import { useState } from "react";
-import { useStore } from "../data/store.jsx";
-import Item from "../components/day/Item.jsx";
-
-export const splitTodosIntoDays = (todos) => {
-  const days = [
-    { name: "Måndag", shortName: "må", items: [] },
-    { name: "Tisdag", shortName: "ti", items: [] },
-    { name: "Onsdag", shortName: "on", items: [] },
-    { name: "Torsdag", shortName: "to", items: [] },
-    { name: "Fredag", shortName: "fr", items: [] },
-    { name: "Lördag", shortName: "lö", items: [] },
-    { name: "Söndag", shortName: "sö", items: [] },
-  ];
-
-  todos.forEach((todo) => {
-    const day = days.find((d) => d.shortName === todo.day);
-    if (day) {
-      day.items.push(todo);
-    }
-  });
-
-  return days;
-};
+import { useStore } from "../../data/store.js";
+import Item from "../day/Item.jsx";
 
 const PrioList = () => {
   const todos = useStore((state) => state.todos);
