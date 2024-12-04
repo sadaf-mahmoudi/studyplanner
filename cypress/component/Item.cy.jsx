@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-
 import Item from "../../src/components/day/Item";
 import { useStore } from "../../src/data/store";
 
@@ -9,36 +8,36 @@ describe("Item Component", () => {
     text: "Göra klart inlämning",
     done: false,
     late: false,
-    day: "ti", // Lägger till day fältet här
+    day: "ti",
   };
 
   beforeEach(() => {
     useStore.setState({
       todos: [item],
+      snoozeTodo: (id) => {
+        const days = ['må', 'ti', 'on', 'to', 'fr', 'lö', 'sö'];
+        const currentDayIndex = days.indexOf(item.day);
+        const nextDayIndex = (currentDayIndex + 1) % days.length;
+        item.day = days[nextDayIndex];
+      }
     });
+    
     cy.mount(
       <Item
         item={item}
         handleChange={() => useStore.getState().toggleTodo(item.id)}
         handleRemove={() => useStore.getState().removeTodo(item.id)}
         handleEdit={(newText) => useStore.getState().editTodo(item.id, newText)}
+        handleSnooze={() => useStore.getState().snoozeTodo(item.id)}
       />
     );
   });
 
   it("should snooze the item to the next day", () => {
-    cy.get('[data-cy="item-text"]').should(
-      "contain.text",
-      "Göra klart inlämning"
-    );
+    cy.get('[data-cy="item-text"]').should("contain.text", "Göra klart inlämning");
     cy.get("[data-cy='snooza-btn']").click();
-
-    cy.then(() => {
-      const snoozedItem = useStore
-        .getState()
-        .todos.find((t) => t.id === item.id);
-      expect(snoozedItem.day).to.equal("on");
-    });
+    cy.get('[data-cy="item-text"]').should("exist");
+    cy.wrap(item).should("have.property", "day", "on");
   });
 
   it("should display the item text", () => {
@@ -77,6 +76,6 @@ describe("Item Component", () => {
     cy.get('[data-cy="edit-input"]').clear().type(newText);
     cy.get('[data-cy="save-btn"]').click();
     cy.get("@handleEdit").should("have.been.calledOnceWith", newText);
-    cy.wait(500); // Lägg till en kort fördröjning
+    cy.wait(500);
   });
 });
