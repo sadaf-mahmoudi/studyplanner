@@ -1,12 +1,11 @@
-import { useStore } from "../data/store.js";
-
+// src/components/Footer.jsx
 const Footer = () => {
-  const todayName = useStore((state) => state.todayName);
-
   return (
     <footer>
-      <p> Idag är det: {todayName} </p>
-      <p> Studieguide | 2024 </p>
+      <p>
+        <span data-cy="footer-text">© 2024</span> | 
+        <span data-cy="footer-author">Studyplanner</span>
+      </p>
     </footer>
   );
 };

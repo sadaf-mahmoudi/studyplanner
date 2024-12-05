@@ -1,15 +1,16 @@
-/* eslint-disable no-undef */
+// cypress/component/Footer.cy.jsx
+import Footer from '../../src/components/Footer'
 
-import Footer from "../../src/components/Footer";
-import { useStore } from "../../src/data/store";
+describe('Footer Component', () => {
+  beforeEach(() => {
+    cy.mount(<Footer />)
+  })
 
-describe("Footer Component", () => {
-  it("should display the correct text", () => {
-    // Mock the store state
-    useStore.setState({ todayName: "Måndag" });
+  it('should display copyright text', () => {
+    cy.get('[data-cy="footer-text"]').should('contain', '© 2024')
+  })
 
-    cy.mount(<Footer />);
-    cy.contains("Idag är det: Måndag").should("be.visible");
-    cy.contains("Studieguide | 2024").should("be.visible");
-  });
-});
+  it('should display author name', () => {
+    cy.get('[data-cy="footer-author"]').should('contain', 'Studyplanner')
+  })
+})

@@ -1,13 +1,17 @@
-import { useStore } from "../data/store.js";
+// src/components/Summary.jsx
+import { useStore } from "../data/store";
 
 const Summary = () => {
   const todos = useStore((state) => state.todos);
-  const completed = todos.filter((todo) => todo.done).length;
-  const total = todos.length;
+  const completedTodos = todos.filter((todo) => todo.done).length;
+  const totalTodos = todos.length;
+  const remainingTodos = totalTodos - completedTodos;
 
   return (
-    <div className="summary" data-cy="summary">
-      {completed}/{total} klara
+    <div className="summary">
+      <span data-cy="total-todos">{totalTodos}</span>/
+      <span data-cy="completed-todos">{completedTodos}</span> klara
+      (<span data-cy="remaining-todos">{remainingTodos}</span> kvar)
     </div>
   );
 };
