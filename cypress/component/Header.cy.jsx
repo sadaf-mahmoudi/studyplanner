@@ -1,47 +1,30 @@
-/* eslint-disable no-undef */
-import Header from "../../src/components/Header";
-import { useStore } from "../../src/data/store";
-import Day from "../../src/components/day/Day";
+// cypress/component/Header.cy.jsx
+import Header from '../../src/components/Header'
+import { useStore } from '../../src/data/store'
 
-describe("Header Component", () => {
+describe('Header Component', () => {
   beforeEach(() => {
     useStore.setState({
       todos: [
-        {
-          id: 1,
-          text: "Göra klart inlämning",
-          done: true,
-          late: false,
-          day: "må",
-        },
-        {
-          id: 2,
-          text: "Lektion i skolan 9-16",
-          done: true,
-          late: false,
-          day: "må",
-        },
+        { id: 1, text: "Test todo", done: true, day: "må" }
       ],
-    });
-    cy.mount(
-      <>
-        <Header />
-        <Day dayName="Måndag" dayShortName="må" />
-      </>
-    );
-  });
+      restartWeek: cy.stub().as('restartWeek'),
+      startNextWeek: cy.stub().as('startNextWeek')
+    })
+    cy.mount(<Header />)
+  })
 
-  it("should display the correct header text", () => {
-    cy.get("h1").should("contain.text", "Min vecka");
-  });
+  it('should display title', () => {
+    cy.get('[data-cy="header-title"]').should('contain', 'Studieplanerare')
+  })
 
-  it("should display the restart week button with correct text", () => {
-    cy.get(".restart-week").contains("Starta om vecka").should("be.visible");
-  });
+  it('should call restartWeek when restart button is clicked', () => {
+    cy.get('[data-cy="restart-btn"]').click()
+    cy.get('@restartWeek').should('have.been.called')
+  })
 
-  it("should display the start next week button with correct text", () => {
-    cy.get(".start-next-week")
-      .contains("Starta nästa vecka")
-      .should("be.visible");
-  });
-});
+  it('should call startNextWeek when next week button is clicked', () => {
+    cy.get('[data-cy="next-week-btn"]').click()
+    cy.get('@startNextWeek').should('have.been.called')
+  })
+})
