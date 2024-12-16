@@ -1,5 +1,5 @@
 // cypress/support/component.js
-import { mount } from 'cypress/react18'  // Notera: react18 istället för react
+import { mount } from 'cypress/react18'  
 import '../../src/index.css'
 
 Cypress.Commands.add('mount', mount)

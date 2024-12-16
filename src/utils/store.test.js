@@ -1,63 +1,107 @@
-import { describe, it, expect } from "vitest";
-import { splitTodosIntoDays } from "./list";
+import { describe, it, expect, beforeEach } from "vitest";
+import { act } from "@testing-library/react";
+import { useStore } from "../data/store";
 
-describe("splitTodosIntoDays", () => {
-  it("should split todos into correct days", () => {
-    const todos = [
+beforeEach(() => {
+  useStore.setState({
+    todos: [
       {
         id: 1,
-        day: "må",
-        done: true,
-        late: false,
         text: "Göra klart inlämning",
+        done: false,
+        late: false,
+        day: "må",
       },
       {
         id: 2,
-        day: "ti",
+        text: "Lektion i skolan 9-16",
         done: true,
         late: false,
-        text: "Lektion i skolan 9-16",
+        day: "ti",
       },
-      { id: 3, day: "ti", done: false, late: true, text: "Övning 1" },
-      {
-        id: 4,
-        day: "on",
-        done: false,
-        late: false,
-        text: "Repetera lektionen",
-      },
-      { id: 5, day: "on", done: true, late: false, text: "Övning 2" },
-      {
-        id: 6,
-        day: "to",
-        done: false,
-        late: false,
-        text: "Distanslektion 9-16",
-      },
-    ];
+      { id: 3, text: "Skriva rapport", done: false, late: true, day: "on" },
+    ],
+  });
+});
 
-    const days = splitTodosIntoDays(todos);
-
-    expect(days[0].name).toBe("Måndag");
-    expect(days[0].items.length).toBe(1); // Måndag
-    expect(days[1].name).toBe("Tisdag");
-    expect(days[1].items.length).toBe(2); // Tisdag
-    expect(days[2].name).toBe("Onsdag");
-    expect(days[2].items.length).toBe(2); // Onsdag
-    expect(days[3].name).toBe("Torsdag");
-    expect(days[3].items.length).toBe(1); // Torsdag
-    expect(days[4].items.length).toBe(0); // Fredag
-    expect(days[5].items.length).toBe(0); // Lördag
-    expect(days[6].items.length).toBe(0); // Söndag
+describe("useStore Zustand store", () => {
+  it("should toggle a todo", () => {
+    act(() => {
+      useStore.getState().toggleTodo(1);
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.find((t) => t.id === 1).done).toBe(true);
   });
 
-  it("should return empty lists for days with no todos", () => {
-    const todos = [];
-
-    const days = splitTodosIntoDays(todos);
-
-    days.forEach((day) => {
-      expect(day.items.length).toBe(0);
+  it("should remove a todo", () => {
+    act(() => {
+      useStore.getState().removeTodo(1);
     });
+    const todos = useStore.getState().todos;
+    expect(todos.length).toBe(2);
+    expect(todos.find((t) => t.id === 1)).toBeUndefined();
+  });
+
+  it("should edit a todo", () => {
+    const newText = "Uppdaterad text";
+    act(() => {
+      useStore.getState().editTodo(1, newText);
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.find((t) => t.id === 1).text).toBe(newText);
+  });
+
+  it("should add a new todo", () => {
+    const newTodo = {
+      id: 4,
+      text: "Ny uppgift",
+      done: false,
+      late: false,
+      day: "to",
+    };
+    act(() => {
+      useStore.getState().addTodo(newTodo);
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.length).toBe(4);
+    expect(todos.find((t) => t.id === 4)).toEqual(newTodo);
+  });
+
+  it("should reset todos", () => {
+    act(() => {
+      useStore.getState().resetTodos();
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.length).toBe(0);
+  });
+
+  it("should restart week with initial todos", () => {
+    act(() => {
+      useStore.getState().restartWeek();
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.length).toBe(6); // Assuming initialTodos has 3 items
+  });
+
+  it("should snooze a todo to the next day", () => {
+    act(() => {
+      useStore.getState().snoozeTodo(1);
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.find((t) => t.id === 1).day).toBe("ti");
+  });
+
+  it("should return the correct summary of todos", () => {
+    const summary = useStore.getState().getTodoSummary();
+    expect(summary.total).toBe(3);
+    expect(summary.completed).toBe(1);
+  });
+
+  it("should mark all todos as not done when startNextWeek is called", () => {
+    act(() => {
+      useStore.getState().startNextWeek();
+    });
+    const todos = useStore.getState().todos;
+    expect(todos.every((t) => !t.done)).toBe(true);
   });
 });

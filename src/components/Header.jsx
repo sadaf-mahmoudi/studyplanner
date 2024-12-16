@@ -1,27 +1,26 @@
-// src/components/Header.jsx
-import { useStore } from "../data/store";
+import { useStore } from "../data/store.js";
 
 const Header = () => {
-  const startNextWeek = useStore((state) => state.startNextWeek);
   const restartWeek = useStore((state) => state.restartWeek);
+  const startNextWeek = useStore((state) => state.startNextWeek);
 
   return (
     <header>
-      <h1 data-cy="header-title">Studieplanerare</h1>
-      <div className="header-buttons">
-        <button 
-          onClick={startNextWeek}
-          data-cy="next-week-btn"
-        >
-          Starta nästa vecka
-        </button>
-        <button 
-          onClick={restartWeek}
-          data-cy="restart-btn"
-        >
-          Starta om vecka
-        </button>
-      </div>
+      <h1>Min vecka</h1>
+      <button
+        className="restart-week"
+        onClick={restartWeek}
+        data-cy="restart-week"
+      >
+        Starta om vecka
+      </button>
+      <button
+        className="start-next-week"
+        onClick={startNextWeek}
+        data-cy="start-next-week"
+      >
+        Starta nästa vecka
+      </button>
     </header>
   );
 };

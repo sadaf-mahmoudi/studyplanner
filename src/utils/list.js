@@ -1,4 +1,4 @@
-export const splitTodosIntoDays = (todos) => {
+  const splitTodosIntoDays = (todos) => {
   const daysOfWeek = [
     { name: "Måndag", shortName: "må", items: [] },
     { name: "Tisdag", shortName: "ti", items: [] },
@@ -18,3 +18,6 @@ export const splitTodosIntoDays = (todos) => {
 
   return daysOfWeek;
 };
+
+export { splitTodosIntoDays };
+
