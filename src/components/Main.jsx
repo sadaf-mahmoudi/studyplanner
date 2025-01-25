@@ -13,12 +13,7 @@ const Main = () => {
       <Summary />
       <div className="day-view">
         {days.map((d, index) => (
-         <Day 
-         key={index} 
-         dayName={d.name} 
-         dayShortName={d.shortName}  
-         items={d.items} 
-       />
+          <Day key={index} dayName={d.name} items={d.items} />
         ))}
       </div>
       <hr />

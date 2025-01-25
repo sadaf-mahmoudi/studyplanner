@@ -1,3 +1,4 @@
+// cypress.config.js
 import { defineConfig } from "cypress";
 
 export default defineConfig({
@@ -8,9 +9,9 @@ export default defineConfig({
     },
   },
   e2e: {
-    baseUrl: 'http://localhost:5173',
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    baseUrl: "http://localhost:3000", // se till att detta stämmer överens med Vite servern
   },
 });
